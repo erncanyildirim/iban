@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IBAN Kopyala</title>
+<style>
+:root{--bg:#f4f4f5;--card:#fff;--fg:#111;--mut:#666;--acc:#16a34a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111;--card:#1c1c1e;--fg:#eee;--mut:#aaa}}
+:root[data-theme="dark"]{--bg:#111;--card:#1c1c1e;--fg:#eee;--mut:#aaa}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}
+.c{background:var(--card);border-radius:20px;padding:28px 20px;max-width:420px;width:100%;text-align:center;box-shadow:0 4px 20px #0002}
+.s{color:var(--mut);font-size:14px}.n{font-size:20px;font-weight:700;margin:6px 0 14px}
+.i{font-family:ui-monospace,monospace;font-size:19px;font-weight:600;word-spacing:2px;margin-bottom:20px;user-select:all}
+button{width:100%;padding:18px;font-size:19px;font-weight:700;border:0;border-radius:14px;background:var(--acc);color:#fff}
+#m{margin-top:12px;min-height:20px;color:var(--acc);font-weight:600}
+</style></head><body><div class="c" id="c"></div>
+<script>
+const D={
+ serhat:{f:"Serhat Et-Balık",b:"Ziraat Bankası",n:"Muhammet Kamil Köksalan",i:"TR100001002338881403895001"},
+ fistikci:{f:"Fıstıkçı Yılmazer",b:"VakıfBank",n:"Yılmazer Kardeşler Yerfıstık San. ve Tic. Paz. Ltd. Şti.",i:"TR410001500158007302532654"},
+ nargile:{f:"Tütün & Nargile",b:"Garanti BBVA",n:"Emine Nur Akbalık",i:"TR800006200052700006820402"},
+ hulya:{f:"Foto Tuna",b:"Ziraat Bankası",n:"Hülya Pancar",i:"TR330001002338641221735001"},
+ serdar:{f:"Foto Tuna",b:"Ziraat Bankası",n:"Serdar Pancar",i:"TR360001002338811491595001"}};
+const k='fistikci',d=D[k],c=document.getElementById('c');
+if(!d){c.innerHTML='<p>IBAN bulunamadı.</p>'}else{
+ const fmt=d.i.replace(/(.{4})/g,'$1 ').trim();
+ c.innerHTML=`<div class="s">${d.f} · ${d.b}</div><div class="n">${d.n}</div><div class="i">${fmt}</div><button id="b">IBAN'ı Kopyala</button><div id="m"></div>`;
+ const m=document.getElementById('m');
+ async function cp(){try{await navigator.clipboard.writeText(d.i);m.textContent='✓ Kopyalandı'}catch(e){const t=document.createElement('textarea');t.value=d.i;document.body.appendChild(t);t.select();try{document.execCommand('copy');m.textContent='✓ Kopyalandı'}catch(_){m.textContent='IBAN\'a basılı tutup kopyalayın'}t.remove()}}
+ document.getElementById('b').onclick=cp; cp().catch(()=>{});
+}
+</script></body></html>
